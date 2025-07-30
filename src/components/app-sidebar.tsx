@@ -55,18 +55,30 @@ export function AppSidebar() {
       <SidebarContent className="bg-gradient-to-b from-card to-muted/20">
         <div className="p-4 border-b border-border">
           {!collapsed ? (
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <img src={bravoLogo} />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-foreground">Bravo</h2>
-                <p className="text-xs text-muted-foreground">SquadAnalytics</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                  <img
+                    src={bravoLogo}
+                    className="dark:invert dark:brightness-0 dark:contrast-100"
+                  />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Bravo</h2>
+                  <p className="text-xs text-muted-foreground">
+                    SquadAnalytics
+                  </p>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto">
-              <img src={bravoLogo} />
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <img
+                  src={bravoLogo}
+                  className="dark:invert dark:brightness-0 dark:contrast-100"
+                />
+              </div>
             </div>
           )}
         </div>
@@ -86,8 +98,12 @@ export function AppSidebar() {
                       className={getNavCls}
                       title={collapsed ? item.title : undefined}
                     >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      {!collapsed && <span className="ml-3">{item.title}</span>}
+                      <item.icon className="h-4 w-4 shrink-0 text-foreground" />
+                      {!collapsed && (
+                        <span className="ml-3 text-foreground">
+                          {item.title}
+                        </span>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
