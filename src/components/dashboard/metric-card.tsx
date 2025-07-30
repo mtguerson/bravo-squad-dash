@@ -43,8 +43,10 @@ export function MetricCard({
                 trend.isPositive ? 'text-green-500' : 'text-destructive'
               )}
             >
-              {trend.isPositive ? '+' : ''}
-              {trend.value}% {trend.label}
+              {trend.value.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+              })}
             </span>
           </div>
         )}

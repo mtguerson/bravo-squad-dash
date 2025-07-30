@@ -1,33 +1,21 @@
-import { useState } from 'react';
 import { CalendarIcon, Building2, Play } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { HeaderSelect } from './header-select';
+import { useHeader } from '@/hooks/use-header';
 
 export function Header() {
-  const [selectedCompany, setSelectedCompany] = useState('bravo-corp');
-  const [selectedPlayer, setSelectedPlayer] = useState('all');
-  const [selectedPeriod, setSelectedPeriod] = useState('30d');
-
-  const companies = [
-    { value: 'bravo-corp', label: 'Bravo Corp' },
-    { value: 'tech-solutions', label: 'Tech Solutions' },
-    { value: 'digital-media', label: 'Digital Media' },
-  ];
-
-  const players = [
-    { value: 'all', label: 'Todos os Players' },
-    { value: 'player-1', label: 'Player Principal' },
-    { value: 'player-2', label: 'Player Secundário' },
-    { value: 'player-3', label: 'Player Mobile' },
-  ];
-
-  const periods = [
-    { value: '7d', label: 'Últimos 7 dias' },
-    { value: '30d', label: 'Últimos 30 dias' },
-    { value: '90d', label: 'Últimos 90 dias' },
-    { value: '1y', label: 'Último ano' },
-  ];
+  const {
+    selectedCompany,
+    selectedPeriod,
+    selectedPlayer,
+    setSelectedCompany,
+    setSelectedPeriod,
+    setSelectedPlayer,
+    companies,
+    periods,
+    players,
+  } = useHeader();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

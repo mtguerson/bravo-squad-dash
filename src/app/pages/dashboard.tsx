@@ -2,6 +2,9 @@ import { Target, TrendingUp, Users, Play, Clock, Zap } from 'lucide-react';
 import { MetricCard } from '@/components/dashboard/metric-card';
 import { LineChartComponent } from '@/components/charts/line-chart';
 import { BarChartComponent } from '@/components/charts/bar-chart';
+import { useQuery } from '@tanstack/react-query';
+import { listTodayConversions } from '@/routes/list-today-conversions';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const conversionData = [
   { data: '01/12', conversões: 142 },
@@ -23,6 +26,13 @@ const engagementData = [
 ];
 
 export function Dashboard() {
+  const { data, isLoading } = useQuery({
+    queryFn: () => listTodayConversions(),
+    queryKey: ['today'],
+  });
+
+  console.log(data);
+
   return (
     <div className="p-6 space-y-6 animate-fade-in">
       <div>
@@ -35,14 +45,22 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <MetricCard
-          title="Conversões Hoje"
-          value="1,247"
-          description="Total de conversões registradas"
-          icon={<Target className="h-4 w-4" />}
-          trend={{ value: 12.5, label: 'vs ontem', isPositive: true }}
-          className="bg-gradient-to-br from-card to-accent/5"
-        />
+        {isLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Conversões Hoje"
+            value={data?.total_events!}
+            description="Total de conversões registradas"
+            icon={<Target className="h-4 w-4" />}
+            trend={{
+              value: data?.total_amount_usd!,
+              label: 'vs ontem',
+              isPositive: data?.total_amount_usd === 0 ? false : true,
+            }}
+            className="bg-gradient-to-br from-card to-accent/5"
+          />
+        )}
         <MetricCard
           title="Taxa de Engajamento"
           value="68.3%"
