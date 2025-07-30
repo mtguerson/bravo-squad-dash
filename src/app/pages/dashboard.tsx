@@ -4,22 +4,22 @@ import { LineChartComponent } from '@/components/charts/line-chart';
 import { BarChartComponent } from '@/components/charts/bar-chart';
 
 const conversionData = [
-  { date: '01/12', conversions: 142 },
-  { date: '02/12', conversions: 158 },
-  { date: '03/12', conversions: 134 },
-  { date: '04/12', conversions: 189 },
-  { date: '05/12', conversions: 167 },
-  { date: '06/12', conversions: 203 },
-  { date: '07/12', conversions: 178 },
+  { data: '01/12', conversões: 142 },
+  { data: '02/12', conversões: 158 },
+  { data: '03/12', conversões: 134 },
+  { data: '04/12', conversões: 189 },
+  { data: '05/12', conversões: 167 },
+  { data: '06/12', conversões: 203 },
+  { data: '07/12', conversões: 178 },
 ];
 
 const engagementData = [
-  { hour: '00h', engagement: 24 },
-  { hour: '04h', engagement: 18 },
-  { hour: '08h', engagement: 67 },
-  { hour: '12h', engagement: 89 },
-  { hour: '16h', engagement: 145 },
-  { hour: '20h', engagement: 98 },
+  { hora: '00h', engajamento: 24 },
+  { hora: '04h', engajamento: 18 },
+  { hora: '08h', engajamento: 67 },
+  { hora: '12h', engajamento: 89 },
+  { hora: '16h', engajamento: 145 },
+  { hora: '20h', engajamento: 98 },
 ];
 
 export function Dashboard() {
@@ -98,16 +98,16 @@ export function Dashboard() {
           title="Conversões Diárias"
           description="Evolução das conversões nos últimos 7 dias"
           data={conversionData}
-          dataKey="conversions"
-          xAxisKey="date"
+          dataKey="conversões"
+          xAxisKey="data"
           color="var(--primary)"
         />
         <BarChartComponent
           title="Engajamento por Horário"
           description="Distribuição de engajamento ao longo do dia"
           data={engagementData}
-          dataKey="engagement"
-          xAxisKey="hour"
+          dataKey="engajamento"
+          xAxisKey="hora"
           color="var(--primary)"
         />
       </div>
