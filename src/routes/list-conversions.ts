@@ -1,12 +1,5 @@
 import { api } from '@/lib/axios';
 
-interface ListTodayConversions {
-  player_id: string;
-  start_date: string;
-  end_date: string;
-  timezone?: string;
-}
-
 interface ListTodayResponse {
   total_events: number;
   total_uniq_session_events: number;
@@ -22,12 +15,24 @@ interface ListTodayResponse {
   }[];
 }
 
-export async function listTodayConversions() {
-  setTimeout(() => {
-    console.log('Delayed for 1 second.');
-  }, 1000000);
+interface ListConversionsRequest {
+  startDate: string;
+  endDate: string;
+  playerId: string;
+}
 
-  const response = await api.get<ListTodayResponse>('/teste');
+export async function listConversions({
+  startDate,
+  endDate,
+  playerId,
+}: ListConversionsRequest) {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  const response = await api.post<ListTodayResponse>('/list-conversions', {
+    startDate,
+    endDate,
+    playerId,
+  });
 
   return response.data;
 }

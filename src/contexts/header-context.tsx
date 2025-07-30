@@ -1,4 +1,11 @@
-import { createContext, useState } from 'react';
+import { endOfDayFormatted, startOfDayFormatted } from '@/lib/utils';
+import { endOfToday, startOfToday, subDays } from 'date-fns';
+import {
+  createContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 
 interface IHeaderContextProps {
   companies: {
@@ -12,13 +19,29 @@ interface IHeaderContextProps {
   periods: {
     value: string;
     label: string;
+    startOfTheDay: string;
+    endOfTheDay: string;
   }[];
-  selectedCompany: string;
-  setSelectedCompany: React.Dispatch<React.SetStateAction<string>>;
-  selectedPlayer: string;
-  setSelectedPlayer: React.Dispatch<React.SetStateAction<string>>;
-  selectedPeriod: string;
-  setSelectedPeriod: React.Dispatch<React.SetStateAction<string>>;
+  selectedCompany: { value: string; label: string };
+  setSelectedCompany: Dispatch<
+    SetStateAction<{ value: string; label: string }>
+  >;
+  selectedPlayer: { value: string; label: string };
+  setSelectedPlayer: Dispatch<SetStateAction<{ value: string; label: string }>>;
+  selectedPeriod: {
+    value: string;
+    startOfTheDay: string;
+    endOfTheDay: string;
+    label: string;
+  };
+  setSelectedPeriod: Dispatch<
+    SetStateAction<{
+      value: string;
+      startOfTheDay: string;
+      endOfTheDay: string;
+      label: string;
+    }>
+  >;
 }
 
 export const HeaderContext = createContext({} as IHeaderContextProps);
@@ -30,22 +53,36 @@ const companies = [
 ];
 
 const players = [
-  { value: 'cognify-vsl2', label: 'Cognify-VSL2' },
-  { value: 'player-2', label: 'Player Secundário' },
-  { value: 'player-3', label: 'Player Mobile' },
+  { value: '687e6b0509d90c4d947bcf81', label: 'Cognify-VSL2' },
+  { value: '6884056e5e710078faed8565', label: 'GlycoGuard-VSL4' },
+  { value: '688405355085f959648ed904', label: 'AlphaTurbo VSL2' },
 ];
 
 const periods = [
-  { value: 'today', label: 'Hoje' },
-  { value: '7d', label: 'Últimos 7 dias' },
-  { value: '30d', label: 'Últimos 30 dias' },
-  { value: '90d', label: 'Últimos 90 dias' },
+  {
+    value: 'today',
+    startOfTheDay: startOfDayFormatted(startOfToday()),
+    endOfTheDay: endOfDayFormatted(endOfToday()),
+    label: 'Hoje',
+  },
+  {
+    value: 'last7days',
+    startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 7)),
+    endOfTheDay: endOfDayFormatted(endOfToday()),
+    label: 'Últimos 7 dias',
+  },
+  {
+    value: 'last30days',
+    startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 30)),
+    endOfTheDay: endOfDayFormatted(endOfToday()),
+    label: 'Últimos 30 dias',
+  },
 ];
 
 export function HeaderProvider({ children }: { children: React.ReactNode }) {
-  const [selectedCompany, setSelectedCompany] = useState(companies[0].value);
-  const [selectedPlayer, setSelectedPlayer] = useState(players[0].value);
-  const [selectedPeriod, setSelectedPeriod] = useState(periods[0].value);
+  const [selectedCompany, setSelectedCompany] = useState(companies[0]);
+  const [selectedPlayer, setSelectedPlayer] = useState(players[0]);
+  const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
 
   return (
     <HeaderContext.Provider

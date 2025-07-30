@@ -3,8 +3,9 @@ import { MetricCard } from '@/components/dashboard/metric-card';
 import { LineChartComponent } from '@/components/charts/line-chart';
 import { BarChartComponent } from '@/components/charts/bar-chart';
 import { useQuery } from '@tanstack/react-query';
-import { listTodayConversions } from '@/routes/list-today-conversions';
+import { listConversions } from '@/routes/list-conversions';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useHeader } from '@/hooks/use-header';
 
 const conversionData = [
   { data: '01/12', conversões: 142 },
@@ -26,12 +27,22 @@ const engagementData = [
 ];
 
 export function Dashboard() {
-  const { data, isLoading } = useQuery({
-    queryFn: () => listTodayConversions(),
-    queryKey: ['today'],
-  });
+  const { selectedPlayer, selectedPeriod } = useHeader();
 
-  console.log(data);
+  const { data, isLoading } = useQuery({
+    queryFn: () =>
+      listConversions({
+        startDate: selectedPeriod.startOfTheDay,
+        endDate: selectedPeriod.endOfTheDay,
+        playerId: selectedPlayer.value,
+      }),
+    queryKey: [
+      'vsl',
+      selectedPlayer,
+      selectedPeriod.startOfTheDay,
+      selectedPeriod.endOfTheDay,
+    ],
+  });
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
@@ -49,12 +60,12 @@ export function Dashboard() {
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
-            title="Conversões Hoje"
+            title="Conversões"
             value={data?.total_events!}
             description="Total de conversões registradas"
             icon={<Target className="h-4 w-4" />}
             trend={{
-              value: data?.total_amount_usd!,
+              value: data?.total_amount_usd! / 100,
               label: 'vs ontem',
               isPositive: data?.total_amount_usd === 0 ? false : true,
             }}

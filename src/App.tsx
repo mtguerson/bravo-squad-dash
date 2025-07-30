@@ -19,13 +19,13 @@ export function App() {
               <div className="flex-1 flex flex-col">
                 <HeaderProvider>
                   <Header />
+                  <main className="flex-1 overflow-auto">
+                    <Routes>
+                      <Route path="/" element={<Dashboard />} />
+                      {/* <Route path="*" element={<NotFound />} /> */}
+                    </Routes>
+                  </main>
                 </HeaderProvider>
-                <main className="flex-1 overflow-auto">
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    {/* <Route path="*" element={<NotFound />} /> */}
-                  </Routes>
-                </main>
               </div>
             </div>
           </SidebarProvider>

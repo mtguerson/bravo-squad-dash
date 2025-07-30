@@ -29,22 +29,31 @@ export function Header() {
         <div className="flex items-center gap-3">
           <HeaderSelect
             Icon={Building2}
-            value={selectedCompany}
-            onValueChange={setSelectedCompany}
+            value={selectedCompany.value}
+            onValueChange={(value) => {
+              const company = companies.find((c) => c.value === value);
+              if (company) setSelectedCompany(company);
+            }}
             item={companies}
           />
 
           <HeaderSelect
             Icon={Play}
-            value={selectedPlayer}
-            onValueChange={setSelectedPlayer}
+            value={selectedPlayer.value}
+            onValueChange={(value) => {
+              const player = players.find((p) => p.value === value);
+              if (player) setSelectedPlayer(player);
+            }}
             item={players}
           />
 
           <HeaderSelect
             Icon={CalendarIcon}
-            value={selectedPeriod}
-            onValueChange={setSelectedPeriod}
+            value={selectedPeriod.value}
+            onValueChange={(value) => {
+              const period = periods.find((p) => p.value === value);
+              if (period) setSelectedPeriod(period);
+            }}
             item={periods}
           />
         </div>
