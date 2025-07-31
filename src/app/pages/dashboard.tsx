@@ -2,10 +2,12 @@ import { Target, TrendingUp, Users, Play, Clock, Zap } from 'lucide-react';
 import { MetricCard } from '@/components/dashboard/metric-card';
 import { LineChartComponent } from '@/components/charts/line-chart';
 import { BarChartComponent } from '@/components/charts/bar-chart';
-import { useQuery } from '@tanstack/react-query';
-import { listConversions } from '@/routes/list-conversions';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useHeader } from '@/hooks/use-header';
+import {
+  useConversions,
+  useAllPlayersConversions,
+} from '@/hooks/use-conversions';
 
 const conversionData = [
   { data: '01/12', conversões: 142 },
@@ -27,22 +29,20 @@ const engagementData = [
 ];
 
 export function Dashboard() {
-  const { selectedPlayer, selectedPeriod } = useHeader();
+  const { selectedPlayer, selectedPeriod, players } = useHeader();
 
-  const { data, isLoading } = useQuery({
-    queryFn: () =>
-      listConversions({
-        startDate: selectedPeriod.startOfTheDay,
-        endDate: selectedPeriod.endOfTheDay,
-        playerId: selectedPlayer.value,
-      }),
-    queryKey: [
-      'vsl',
-      selectedPlayer,
-      selectedPeriod.startOfTheDay,
-      selectedPeriod.endOfTheDay,
-    ],
+  const { conversions, isConversionsLoading } = useConversions({
+    startOfTheDay: selectedPeriod.startOfTheDay,
+    endOfTheDay: selectedPeriod.endOfTheDay,
+    playerId: selectedPlayer.value,
   });
+
+  const { allPlayersConversions, isAllPlayersConversionsLoading } =
+    useAllPlayersConversions({
+      startOfTheDay: selectedPeriod.startOfTheDay,
+      endOfTheDay: selectedPeriod.endOfTheDay,
+      players: players,
+    });
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
@@ -56,18 +56,18 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {isLoading ? (
+        {isConversionsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Conversões"
-            value={data?.total_events!}
+            value={conversions?.total_events!}
             description="Total de conversões registradas"
             icon={<Target className="h-4 w-4" />}
             trend={{
-              value: data?.total_amount_usd! / 100,
+              value: conversions?.total_amount_usd! / 100,
               label: 'vs ontem',
-              isPositive: data?.total_amount_usd === 0 ? false : true,
+              isPositive: conversions?.total_amount_usd === 0 ? false : true,
             }}
             className="bg-gradient-to-br from-card to-accent/5"
           />
@@ -88,14 +88,22 @@ export function Dashboard() {
           trend={{ value: -2.1, label: 'vs ontem', isPositive: false }}
           className="bg-gradient-to-br from-card to-warning/5"
         />
-        <MetricCard
-          title="Players Ativos"
-          value="24"
-          description="Total de players em funcionamento"
-          icon={<Play className="h-4 w-4" />}
-          trend={{ value: 0, label: 'sem alteração' }}
-          className="bg-gradient-to-br from-card to-primary/5"
-        />
+        {isAllPlayersConversionsLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Players Ativos"
+            value={players.length}
+            description="Total de players em funcionamento"
+            icon={<Play className="h-4 w-4" />}
+            trend={{
+              value: allPlayersConversions?.total_amount_usd! / 100,
+              label: 'sem alteração',
+              isPositive: allPlayersConversions?.total_amount_usd! / 100 > 0,
+            }}
+            className="bg-gradient-to-br from-card to-primary/5"
+          />
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">

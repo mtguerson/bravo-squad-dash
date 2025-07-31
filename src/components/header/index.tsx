@@ -6,13 +6,13 @@ import { useHeader } from '@/hooks/use-header';
 
 export function Header() {
   const {
-    selectedCompany,
+    // selectedCompany,
     selectedPeriod,
     selectedPlayer,
-    setSelectedCompany,
+    // setSelectedCompany,
     setSelectedPeriod,
     setSelectedPlayer,
-    companies,
+    // companies,
     periods,
     players,
   } = useHeader();
@@ -27,7 +27,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          <HeaderSelect
+          {/* <HeaderSelect
             Icon={Building2}
             value={selectedCompany.value}
             onValueChange={(value) => {
@@ -35,9 +35,10 @@ export function Header() {
               if (company) setSelectedCompany(company);
             }}
             item={companies}
-          />
+          /> */}
 
           <HeaderSelect
+            className="w-[180px]"
             Icon={Play}
             value={selectedPlayer.value}
             onValueChange={(value) => {

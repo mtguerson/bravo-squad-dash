@@ -8,10 +8,10 @@ import {
 } from 'react';
 
 interface IHeaderContextProps {
-  companies: {
-    value: string;
-    label: string;
-  }[];
+  // companies: {
+  //   value: string;
+  //   label: string;
+  // }[];
   players: {
     value: string;
     label: string;
@@ -22,10 +22,10 @@ interface IHeaderContextProps {
     startOfTheDay: string;
     endOfTheDay: string;
   }[];
-  selectedCompany: { value: string; label: string };
-  setSelectedCompany: Dispatch<
-    SetStateAction<{ value: string; label: string }>
-  >;
+  // selectedCompany: { value: string; label: string };
+  // setSelectedCompany: Dispatch<
+  //   SetStateAction<{ value: string; label: string }>
+  // >;
   selectedPlayer: { value: string; label: string };
   setSelectedPlayer: Dispatch<SetStateAction<{ value: string; label: string }>>;
   selectedPeriod: {
@@ -46,16 +46,18 @@ interface IHeaderContextProps {
 
 export const HeaderContext = createContext({} as IHeaderContextProps);
 
-const companies = [
-  { value: 'bravo-facebook', label: 'Bravo Facebook' },
-  { value: 'bravo-youtube', label: 'Bravo Youtube' },
-  { value: 'bravo-native', label: 'Bravo Native' },
-];
+// TODO add database
+
+// const companies = [
+//   { value: 'bravo-facebook', label: 'Bravo Facebook' },
+//   { value: 'bravo-youtube', label: 'Bravo Youtube' },
+//   { value: 'bravo-native', label: 'Bravo Native' },
+// ];
 
 const players = [
-  { value: '687e6b0509d90c4d947bcf81', label: 'Cognify-VSL2' },
-  { value: '6884056e5e710078faed8565', label: 'GlycoGuard-VSL4' },
-  { value: '688405355085f959648ed904', label: 'AlphaTurbo VSL2' },
+  { value: '687e6b0509d90c4d947bcf81', label: 'Cognify-VSL2 Lead1' },
+  { value: '6884056e5e710078faed8565', label: 'GlycoGuard-VSL4 Lead1' },
+  { value: '688405355085f959648ed904', label: 'AlphaTurbo VSL2 Lead2' },
 ];
 
 const periods = [
@@ -80,20 +82,20 @@ const periods = [
 ];
 
 export function HeaderProvider({ children }: { children: React.ReactNode }) {
-  const [selectedCompany, setSelectedCompany] = useState(companies[0]);
+  // const [selectedCompany, setSelectedCompany] = useState(companies[0]);
   const [selectedPlayer, setSelectedPlayer] = useState(players[0]);
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
 
   return (
     <HeaderContext.Provider
       value={{
-        selectedCompany,
+        // selectedCompany,
         selectedPeriod,
         selectedPlayer,
-        setSelectedCompany,
+        // setSelectedCompany,
         setSelectedPeriod,
         setSelectedPlayer,
-        companies,
+        // companies,
         periods,
         players,
       }}
