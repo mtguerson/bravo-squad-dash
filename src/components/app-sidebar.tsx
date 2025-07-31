@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   TrendingUp,
   Users,
@@ -7,7 +7,6 @@ import {
   Home,
   Target,
   Clock,
-  Zap,
 } from 'lucide-react';
 
 import {
@@ -23,6 +22,7 @@ import {
 } from '@/components/ui/sidebar';
 
 import bravoLogo from '@/assets/skull_with_transparent_background.png';
+import { useState } from 'react';
 
 const items = [
   { title: 'Dashboard', url: '/', icon: Home },
@@ -31,24 +31,15 @@ const items = [
   { title: 'Retenção', url: '/retention', icon: Clock },
   { title: 'Sessões', url: '/sessions', icon: Users },
   { title: 'Players', url: '/players', icon: Play },
-  { title: 'Métricas Personalizadas', url: '/custom-metrics', icon: Zap },
   { title: 'Configurações', url: '/settings', icon: Settings },
 ];
 
 export function AppSidebar() {
   const { state } = useSidebar();
-  // const location = useLocation();
-  // const currentPath = location.pathname;
+  const [firstItem] = useState(items[0]);
+  const location = useLocation();
+  const currentPath = location.pathname;
   const collapsed = state === 'collapsed';
-
-  // function isActive(path: string) {
-  //   return currentPath === path;
-  // }
-
-  const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive
-      ? 'bg-primary text-primary-foreground font-medium shadow-md'
-      : 'hover:bg-accent/50 hover:text-accent-foreground transition-colors';
 
   return (
     <Sidebar className={collapsed ? 'w-16' : 'w-64'} collapsible="icon">
@@ -85,26 +76,62 @@ export function AppSidebar() {
 
         <SidebarGroup>
           <SidebarGroupLabel className={collapsed ? 'sr-only' : ''}>
-            Navegação Principal
+            Navegação principal
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <NavLink
+                    to={firstItem.url}
+                    end
+                    className={
+                      currentPath &&
+                      'bg-primary/70 text-primary-foreground font-medium shadow-md'
+                    }
+                    title={collapsed ? firstItem.title : undefined}
+                  >
+                    <firstItem.icon className="h-4 w-4 shrink-0 text-foreground" />
+                    {!collapsed && (
+                      <span className="ml-3 text-foreground">
+                        {firstItem.title}
+                      </span>
+                    )}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className={collapsed ? 'sr-only' : ''}>
+            Em Breve
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.slice(1).map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end
-                      className={getNavCls}
-                      title={collapsed ? item.title : undefined}
-                    >
-                      <item.icon className="h-4 w-4 shrink-0 text-foreground" />
-                      {!collapsed && (
-                        <span className="ml-3 text-foreground">
+                  <SidebarMenuButton
+                    disabled
+                    className="cursor-not-allowed opacity-60 hover:opacity-70 transition-opacity"
+                    title={
+                      collapsed
+                        ? `${item.title} - Em desenvolvimento`
+                        : undefined
+                    }
+                  >
+                    <item.icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    {!collapsed && (
+                      <div className="ml-3 flex items-center justify-between w-full">
+                        <span className="text-muted-foreground">
                           {item.title}
                         </span>
-                      )}
-                    </NavLink>
+                        <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full">
+                          Em breve
+                        </span>
+                      </div>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
