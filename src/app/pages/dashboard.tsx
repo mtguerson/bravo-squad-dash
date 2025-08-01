@@ -9,6 +9,7 @@ import {
   useAllPlayersConversions,
 } from '@/hooks/use-conversions';
 import { usePlays } from '@/hooks/use-plays';
+import { useLiveUsers } from '@/hooks/use-live-users';
 
 const conversionData = [
   { data: '01/12', conversões: 142 },
@@ -52,6 +53,8 @@ export function Dashboard() {
     events: ['started'],
   });
 
+  const { liveUsers, areLiveUsersLoading } = useLiveUsers(selectedPlayer.value);
+
   return (
     <div className="p-6 space-y-6 animate-fade-in">
       <div>
@@ -79,20 +82,35 @@ export function Dashboard() {
             className="bg-gradient-to-br from-card to-accent/5"
           />
         )}
-        <MetricCard
-          title="Taxa de Engajamento"
-          value="68.3%"
-          description="Média de interação dos usuários"
-          icon={<TrendingUp className="h-4 w-4" />}
-          trend={{ value: 3.2, isPositive: true }}
-          className="bg-gradient-to-br from-card to-success/5"
-        />
+        {areLiveUsersLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Live Users"
+            value={
+              liveUsers && liveUsers[0]
+                ? liveUsers[0].live_users
+                : 'Nenhum Live User'
+            }
+            description="Live Users nos últimos 30 minutos"
+            icon={<TrendingUp className="h-4 w-4" />}
+            trend={{
+              value:
+                liveUsers && liveUsers[0]
+                  ? liveUsers[0].domain
+                  : 'Nenhum Live User',
+              isPositive: true,
+            }}
+            className="bg-gradient-to-br from-card to-success/5"
+          />
+        )}
+
         {arePlaysLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Plays"
-            value={plays ? plays[0].total : ''}
+            value={plays && plays[0] ? plays[0].total : 'Nenhum Play'}
             description="Plays no vídeo"
             icon={<Users className="h-4 w-4" />}
             trend={{

@@ -7,7 +7,7 @@ interface MetricCardProps {
   description?: string;
   icon?: React.ReactNode;
   trend?: {
-    value: number;
+    value: number | string;
     label?: string;
     isPositive?: boolean;
     isPercent?: boolean;
