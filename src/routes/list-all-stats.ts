@@ -36,8 +36,6 @@ export async function listAllStats({
   endDate,
   playerId,
 }: ListAllStatsRequest) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
   const response = await api.post<ListALlStatsResponse>('/list-all-stats', {
     startDate,
     endDate,

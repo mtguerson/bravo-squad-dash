@@ -37,8 +37,6 @@ export async function listAllStatsByDay({
   endDate,
   playerId,
 }: ListAllStatsByDayRequest) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
   const response = await api.post<ListALlStatsResponse>(
     '/list-all-stats-by-day',
     {
