@@ -17,7 +17,12 @@ import {
 interface LineChartComponentProps {
   title: string;
   description?: string;
-  data: Array<Record<string, unknown>>;
+  data:
+    | Array<{
+        date_key: string;
+        total_conversions: number;
+      }>
+    | undefined;
   dataKey: string;
   xAxisKey: string;
   color?: string;

@@ -17,7 +17,12 @@ import {
 interface BarChartComponentProps {
   title: string;
   description?: string;
-  data: Array<Record<string, unknown>>;
+  data:
+    | Array<{
+        date_key: string;
+        total_amount_brl: number;
+      }>
+    | undefined;
   dataKey: string;
   xAxisKey: string;
   color?: string;
@@ -74,7 +79,12 @@ export function BarChartComponent({
                           <span className="text-[0.70rem] uppercase text-primary">
                             {dataKey}
                           </span>
-                          <span className="font-bold">{payload[0].value}</span>
+                          <span className="font-bold">
+                            {(payload[0].value / 100).toLocaleString('pt-BR', {
+                              currency: 'BRL',
+                              style: 'currency',
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>

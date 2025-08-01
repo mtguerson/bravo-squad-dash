@@ -4,57 +4,64 @@ import { LineChartComponent } from '@/components/charts/line-chart';
 import { BarChartComponent } from '@/components/charts/bar-chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useHeader } from '@/hooks/use-header';
-import { useAllStats } from '@/hooks/use-all-stats';
-
-const conversionData = [
-  { data: '01/12', conversões: 142 },
-  { data: '02/12', conversões: 158 },
-  { data: '03/12', conversões: 134 },
-  { data: '04/12', conversões: 189 },
-  { data: '05/12', conversões: 167 },
-  { data: '06/12', conversões: 203 },
-  { data: '07/12', conversões: 178 },
-];
-
-const engagementData = [
-  { hora: '00h', engajamento: 24 },
-  { hora: '04h', engajamento: 18 },
-  { hora: '08h', engajamento: 67 },
-  { hora: '12h', engajamento: 89 },
-  { hora: '16h', engajamento: 145 },
-  { hora: '20h', engajamento: 98 },
-];
+import { useAllStats, useAllStatsByDay } from '@/hooks/use-all-stats';
+import { endOfDayFormatted, startOfDayFormatted } from '@/lib/utils';
+import { endOfToday, startOfToday, subDays } from 'date-fns';
 
 export function Dashboard() {
   const { selectedPlayer, selectedPeriod } = useHeader();
-
-  // const { conversions, areConversionsLoading } = useConversions({
-  //   startOfTheDay: selectedPeriod.startOfTheDay,
-  //   endOfTheDay: selectedPeriod.endOfTheDay,
-  //   playerId: selectedPlayer.value,
-  // });
-
-  // const { allPlayersConversions, isAllPlayersConversionsLoading } =
-  //   useAllPlayersConversions({
-  //     startOfTheDay: selectedPeriod.startOfTheDay,
-  //     endOfTheDay: selectedPeriod.endOfTheDay,
-  //     players: players,
-  //   });
-
-  // const { plays, arePlaysLoading } = usePlays({
-  //   startOfTheDay: selectedPeriod.startOfTheDay,
-  //   endOfTheDay: selectedPeriod.endOfTheDay,
-  //   playerId: selectedPlayer.value,
-  //   events: ['started'],
-  // });
-
-  // const { liveUsers, areLiveUsersLoading } = useLiveUsers(selectedPlayer.value);
 
   const { allStats, areAllStatsLoading } = useAllStats({
     playerId: selectedPlayer.value,
     startDate: selectedPeriod.startOfTheDay,
     endDate: selectedPeriod.endOfTheDay,
   });
+
+  const { allStatsByDay, areAllStatsByDayStatsLoading } = useAllStatsByDay({
+    playerId: selectedPlayer.value,
+    startDate: startOfDayFormatted(subDays(startOfToday(), 7)),
+    endDate: endOfDayFormatted(endOfToday()),
+  });
+
+  const conversionsPerDay = allStatsByDay?.map(
+    ({ date_key, total_conversions }) => ({ date_key, total_conversions })
+  );
+
+  const conversionsPerDayFiltered = conversionsPerDay?.filter(
+    (_, i) => i !== 0 && i !== 1
+  );
+
+  conversionsPerDayFiltered?.pop();
+
+  const conversionsPerDayFormatted = conversionsPerDayFiltered?.map(
+    (conversion) => {
+      const [_, month, day] = conversion.date_key.split('-');
+      return {
+        ...conversion,
+        date_key: `${day}-${month}`,
+      };
+    }
+  );
+
+  const totalAmountPerDay = allStatsByDay?.map(
+    ({ date_key, total_amount_brl }) => ({ date_key, total_amount_brl })
+  );
+
+  const totalAmountPerDayFiltered = totalAmountPerDay?.filter(
+    (_, i) => i !== 0 && i !== 1
+  );
+
+  totalAmountPerDayFiltered?.pop();
+
+  const totalAmountPerDayFormatted = totalAmountPerDayFiltered?.map(
+    (conversion) => {
+      const [_, mes, dia] = conversion.date_key.split('-');
+      return {
+        ...conversion,
+        date_key: `${dia}-${mes}`,
+      };
+    }
+  );
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
@@ -69,7 +76,7 @@ export function Dashboard() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Visualizações"
@@ -84,7 +91,7 @@ export function Dashboard() {
           />
         )}
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Play Rate"
@@ -100,7 +107,7 @@ export function Dashboard() {
         )}
 
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Retenção ao Pitch"
@@ -117,7 +124,7 @@ export function Dashboard() {
           />
         )}
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Conversões"
@@ -135,7 +142,7 @@ export function Dashboard() {
 
       <div className="grid gap-4 md:grid-cols-3">
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Taxa de Conversão"
@@ -146,7 +153,7 @@ export function Dashboard() {
           />
         )}
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Receita"
@@ -164,7 +171,7 @@ export function Dashboard() {
           />
         )}
         {areAllStatsLoading ? (
-          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Engajamento"
@@ -177,22 +184,30 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <LineChartComponent
-          title="Conversões Diárias"
-          description="Evolução das conversões nos últimos 7 dias"
-          data={conversionData}
-          dataKey="conversões"
-          xAxisKey="data"
-          color="var(--primary)"
-        />
-        <BarChartComponent
-          title="Engajamento por Horário"
-          description="Distribuição de engajamento ao longo do dia"
-          data={engagementData}
-          dataKey="engajamento"
-          xAxisKey="hora"
-          color="var(--primary)"
-        />
+        {areAllStatsByDayStatsLoading ? (
+          <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <LineChartComponent
+            title="Conversões Diárias"
+            description="Evolução das conversões nos últimos 7 dias"
+            data={conversionsPerDayFormatted}
+            dataKey="total_conversions"
+            xAxisKey="date_key"
+            color="var(--primary)"
+          />
+        )}
+        {areAllStatsByDayStatsLoading ? (
+          <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <BarChartComponent
+            title="Receita por dia"
+            description="Distribuição de receita ao longo dos dias"
+            data={totalAmountPerDayFormatted}
+            dataKey="total_amount_brl"
+            xAxisKey="date_key"
+            color="var(--primary)"
+          />
+        )}
       </div>
     </div>
   );

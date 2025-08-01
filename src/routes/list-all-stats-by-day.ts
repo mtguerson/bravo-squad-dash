@@ -1,12 +1,13 @@
 import { api } from '@/lib/axios';
 
-interface ListAllStatsRequest {
+interface ListAllStatsByDayRequest {
   playerId: string;
   startDate: string;
   endDate: string;
 }
 
-interface ListALlStatsResponse {
+type ListALlStatsResponse = Array<{
+  date_key: string;
   total_viewed: number;
   total_viewed_session_uniq: number;
   total_viewed_device_uniq: number;
@@ -19,30 +20,33 @@ interface ListALlStatsResponse {
   total_clicked: number;
   total_clicked_session_uniq: number;
   total_clicked_device_uniq: number;
-  engagement_rate: string;
+  engagement_rate: number;
   total_over_pitch: number;
   total_under_pitch: number;
-  over_pitch_rate: string;
-  play_rate: string;
+  over_pitch_rate: number;
+  play_rate: number;
   total_conversions: number;
   total_amount_usd: number;
   total_amount_brl: number;
   total_amount_eur: number;
-  overall_conversion_rate: string;
-}
+  overall_conversion_rate: number;
+}>;
 
-export async function listAllStats({
+export async function listAllStatsByDay({
   startDate,
   endDate,
   playerId,
-}: ListAllStatsRequest) {
+}: ListAllStatsByDayRequest) {
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  const response = await api.post<ListALlStatsResponse>('/list-all-stats', {
-    startDate,
-    endDate,
-    playerId,
-  });
+  const response = await api.post<ListALlStatsResponse>(
+    '/list-all-stats-by-day',
+    {
+      startDate,
+      endDate,
+      playerId,
+    }
+  );
 
   return response.data;
 }

@@ -1,4 +1,5 @@
 import { listAllStats } from '@/routes/list-all-stats';
+import { listAllStatsByDay } from '@/routes/list-all-stats-by-day';
 import { useQuery } from '@tanstack/react-query';
 
 interface UseAllStatsProps {
@@ -13,12 +14,28 @@ export function useAllStats({
   playerId,
 }: UseAllStatsProps) {
   const { data, isLoading } = useQuery({
-    queryKey: ['all', playerId, startDate, endDate],
+    queryKey: ['all-stats', playerId, startDate, endDate],
     queryFn: async () => listAllStats({ startDate, endDate, playerId }),
   });
 
   return {
     allStats: data,
     areAllStatsLoading: isLoading,
+  };
+}
+
+export function useAllStatsByDay({
+  startDate,
+  endDate,
+  playerId,
+}: UseAllStatsProps) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['all-stats-by-day', playerId],
+    queryFn: async () => listAllStatsByDay({ startDate, endDate, playerId }),
+  });
+
+  return {
+    allStatsByDay: data,
+    areAllStatsByDayStatsLoading: isLoading,
   };
 }
