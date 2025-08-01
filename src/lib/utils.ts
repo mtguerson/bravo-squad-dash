@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function startOfDayFormatted(date: Date) {
+export function startOfDayFormatted(date: Date | string) {
   return startOfDay(date).toISOString().slice(0, 10) + ' 00:00:00';
 }
 

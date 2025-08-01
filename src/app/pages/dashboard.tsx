@@ -4,12 +4,7 @@ import { LineChartComponent } from '@/components/charts/line-chart';
 import { BarChartComponent } from '@/components/charts/bar-chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useHeader } from '@/hooks/use-header';
-import {
-  useConversions,
-  useAllPlayersConversions,
-} from '@/hooks/use-conversions';
-import { usePlays } from '@/hooks/use-plays';
-import { useLiveUsers } from '@/hooks/use-live-users';
+import { useAllStats } from '@/hooks/use-all-stats';
 
 const conversionData = [
   { data: '01/12', conversões: 142 },
@@ -31,29 +26,35 @@ const engagementData = [
 ];
 
 export function Dashboard() {
-  const { selectedPlayer, selectedPeriod, players } = useHeader();
+  const { selectedPlayer, selectedPeriod } = useHeader();
 
-  const { conversions, areConversionsLoading } = useConversions({
-    startOfTheDay: selectedPeriod.startOfTheDay,
-    endOfTheDay: selectedPeriod.endOfTheDay,
+  // const { conversions, areConversionsLoading } = useConversions({
+  //   startOfTheDay: selectedPeriod.startOfTheDay,
+  //   endOfTheDay: selectedPeriod.endOfTheDay,
+  //   playerId: selectedPlayer.value,
+  // });
+
+  // const { allPlayersConversions, isAllPlayersConversionsLoading } =
+  //   useAllPlayersConversions({
+  //     startOfTheDay: selectedPeriod.startOfTheDay,
+  //     endOfTheDay: selectedPeriod.endOfTheDay,
+  //     players: players,
+  //   });
+
+  // const { plays, arePlaysLoading } = usePlays({
+  //   startOfTheDay: selectedPeriod.startOfTheDay,
+  //   endOfTheDay: selectedPeriod.endOfTheDay,
+  //   playerId: selectedPlayer.value,
+  //   events: ['started'],
+  // });
+
+  // const { liveUsers, areLiveUsersLoading } = useLiveUsers(selectedPlayer.value);
+
+  const { allStats, areAllStatsLoading } = useAllStats({
     playerId: selectedPlayer.value,
+    startDate: selectedPeriod.startOfTheDay,
+    endDate: selectedPeriod.endOfTheDay,
   });
-
-  const { allPlayersConversions, isAllPlayersConversionsLoading } =
-    useAllPlayersConversions({
-      startOfTheDay: selectedPeriod.startOfTheDay,
-      endOfTheDay: selectedPeriod.endOfTheDay,
-      players: players,
-    });
-
-  const { plays, arePlaysLoading } = usePlays({
-    startOfTheDay: selectedPeriod.startOfTheDay,
-    endOfTheDay: selectedPeriod.endOfTheDay,
-    playerId: selectedPlayer.value,
-    events: ['started'],
-  });
-
-  const { liveUsers, areLiveUsersLoading } = useLiveUsers(selectedPlayer.value);
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
@@ -67,100 +68,112 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {areConversionsLoading ? (
+        {areAllStatsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
-            title="Conversões"
-            value={conversions ? conversions.total_events : ''}
-            description="Total de conversões registradas"
+            title="Visualizações"
+            value={allStats ? allStats.total_viewed : ''}
+            description="Número de vezes que o vídeo foi carregado"
             icon={<Target className="h-4 w-4" />}
-            trend={{
-              value: conversions?.total_amount_usd! / 100,
-              isPositive: conversions?.total_amount_usd === 0 ? false : true,
-            }}
+            // trend={{
+            //   value: allStats?.total_amount_usd! / 100,
+            //   isPositive: conversions?.total_amount_usd === 0 ? false : true,
+            // }}
             className="bg-gradient-to-br from-card to-accent/5"
           />
         )}
-        {areLiveUsersLoading ? (
+        {areAllStatsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
-            title="Live Users"
-            value={
-              liveUsers && liveUsers[0]
-                ? liveUsers[0].live_users
-                : 'Nenhum Live User'
-            }
-            description="Live Users nos últimos 30 minutos"
+            title="Play Rate"
+            value={allStats ? `${allStats.play_rate}%` : ''}
+            description="Número de plays únicos dividido pela quantidade de visualizações únicas"
             icon={<TrendingUp className="h-4 w-4" />}
-            trend={{
-              value:
-                liveUsers && liveUsers[0]
-                  ? liveUsers[0].domain
-                  : 'Nenhum Live User',
-              isPositive: true,
-            }}
+            // trend={{
+            //   value: allStats ? allStats.play_rate : '',
+            //   isPositive: true,
+            // }}
             className="bg-gradient-to-br from-card to-success/5"
           />
         )}
 
-        {arePlaysLoading ? (
+        {areAllStatsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
-            title="Plays"
-            value={plays && plays[0] ? plays[0].total : 'Nenhum Play'}
-            description="Plays no vídeo"
+            title="Retenção ao Pitch"
+            value={allStats ? `${allStats.over_pitch_rate}%` : ''}
+            description="% de pessoas que estão chegando"
             icon={<Users className="h-4 w-4" />}
-            trend={{
-              value: +2.1,
-              label: 'vs ontem',
-              isPercent: true,
-              isPositive: true,
-            }}
+            // trend={{
+            //   value: +2.1,
+            //   label: 'vs ontem',
+            //   isPercent: true,
+            //   isPositive: true,
+            // }}
             className="bg-gradient-to-br from-card to-warning/5"
           />
         )}
-        {isAllPlayersConversionsLoading ? (
+        {areAllStatsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
-            title="Players Ativos"
-            value={players.length}
-            description="Total de players em funcionamento"
+            title="Conversões"
+            value={allStats ? allStats.total_conversions : ''}
+            description="Número de conversões do vídeo"
             icon={<Play className="h-4 w-4" />}
-            trend={{
-              value: allPlayersConversions?.total_amount_usd! / 100,
-              isPositive: allPlayersConversions?.total_amount_usd! / 100 > 0,
-            }}
+            // trend={{
+            //   value: allPlayersConversions?.total_amount_usd! / 100,
+            //   isPositive: allPlayersConversions?.total_amount_usd! / 100 > 0,
+            // }}
             className="bg-gradient-to-br from-card to-primary/5"
           />
         )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <MetricCard
-          title="Tempo Médio de Visualização"
-          value="3:42"
-          description="Minutos por sessão"
-          icon={<Clock className="h-4 w-4" />}
-          trend={{ value: 8.1, isPositive: true }}
-        />
-        <MetricCard
-          title="Pico de Audiência"
-          value="16:30"
-          description="Horário com mais conversões"
-          icon={<Zap className="h-4 w-4" />}
-          trend={{ value: 145 }}
-        />
-        <MetricCard
-          title="Player Destaque"
-          value="Player Principal"
-          description="Maior taxa de conversão (72%)"
-          icon={<Target className="h-4 w-4" />}
-          trend={{ value: 5.3, isPositive: true }}
-        />
+        {areAllStatsLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Taxa de Conversão"
+            value={allStats ? `${allStats.overall_conversion_rate}%` : ''}
+            description="Número de conversões dividido pelo número de plays únicos"
+            icon={<Clock className="h-4 w-4" />}
+            // trend={{ value: 8.1, isPositive: true }}
+          />
+        )}
+        {areAllStatsLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Receita"
+            value={
+              allStats
+                ? (allStats.total_amount_brl / 100).toLocaleString('pt-BR', {
+                    currency: 'BRL',
+                    style: 'currency',
+                  })
+                : ''
+            }
+            description="Receita total gerada a partir de conversões"
+            icon={<Zap className="h-4 w-4" />}
+            // trend={{ value: 145 }}
+          />
+        )}
+        {areAllStatsLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Engajamento"
+            value={allStats ? `${allStats.engagement_rate}%` : ''}
+            description="Total do vídeo assistido dividido pela quantidade de plays multiplicado pela duração do vídeo"
+            icon={<Target className="h-4 w-4" />}
+            // trend={{ value: 5.3, isPositive: true }}
+          />
+        )}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
