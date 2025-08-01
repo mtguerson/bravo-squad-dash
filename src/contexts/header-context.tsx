@@ -11,6 +11,7 @@ interface IHeaderContextProps {
   players: {
     value: string;
     label: string;
+    createdAt: string;
   }[];
   periods: {
     value: string;

@@ -1,4 +1,4 @@
-import { CalendarIcon, Building2, Play } from 'lucide-react';
+import { CalendarIcon, Play } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { HeaderSelect } from './header-select';
