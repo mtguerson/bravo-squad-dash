@@ -8,6 +8,7 @@ import {
   useConversions,
   useAllPlayersConversions,
 } from '@/hooks/use-conversions';
+import { usePlays } from '@/hooks/use-plays';
 
 const conversionData = [
   { data: '01/12', conversões: 142 },
@@ -31,7 +32,7 @@ const engagementData = [
 export function Dashboard() {
   const { selectedPlayer, selectedPeriod, players } = useHeader();
 
-  const { conversions, isConversionsLoading } = useConversions({
+  const { conversions, areConversionsLoading } = useConversions({
     startOfTheDay: selectedPeriod.startOfTheDay,
     endOfTheDay: selectedPeriod.endOfTheDay,
     playerId: selectedPlayer.value,
@@ -43,6 +44,13 @@ export function Dashboard() {
       endOfTheDay: selectedPeriod.endOfTheDay,
       players: players,
     });
+
+  const { plays, arePlaysLoading } = usePlays({
+    startOfTheDay: selectedPeriod.startOfTheDay,
+    endOfTheDay: selectedPeriod.endOfTheDay,
+    playerId: selectedPlayer.value,
+    events: ['started'],
+  });
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
@@ -56,17 +64,16 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {isConversionsLoading ? (
+        {areConversionsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
           <MetricCard
             title="Conversões"
-            value={conversions?.total_events!}
+            value={conversions ? conversions.total_events : ''}
             description="Total de conversões registradas"
             icon={<Target className="h-4 w-4" />}
             trend={{
               value: conversions?.total_amount_usd! / 100,
-              label: 'vs ontem',
               isPositive: conversions?.total_amount_usd === 0 ? false : true,
             }}
             className="bg-gradient-to-br from-card to-accent/5"
@@ -77,17 +84,26 @@ export function Dashboard() {
           value="68.3%"
           description="Média de interação dos usuários"
           icon={<TrendingUp className="h-4 w-4" />}
-          trend={{ value: 3.2, label: 'vs semana passada', isPositive: true }}
+          trend={{ value: 3.2, isPositive: true }}
           className="bg-gradient-to-br from-card to-success/5"
         />
-        <MetricCard
-          title="Sessões Ativas"
-          value="892"
-          description="Usuários assistindo agora"
-          icon={<Users className="h-4 w-4" />}
-          trend={{ value: -2.1, label: 'vs ontem', isPositive: false }}
-          className="bg-gradient-to-br from-card to-warning/5"
-        />
+        {arePlaysLoading ? (
+          <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+        ) : (
+          <MetricCard
+            title="Plays"
+            value={plays ? plays[0].total : ''}
+            description="Plays no vídeo"
+            icon={<Users className="h-4 w-4" />}
+            trend={{
+              value: +2.1,
+              label: 'vs ontem',
+              isPercent: true,
+              isPositive: true,
+            }}
+            className="bg-gradient-to-br from-card to-warning/5"
+          />
+        )}
         {isAllPlayersConversionsLoading ? (
           <Skeleton className="bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
         ) : (
@@ -98,7 +114,6 @@ export function Dashboard() {
             icon={<Play className="h-4 w-4" />}
             trend={{
               value: allPlayersConversions?.total_amount_usd! / 100,
-              label: 'sem alteração',
               isPositive: allPlayersConversions?.total_amount_usd! / 100 > 0,
             }}
             className="bg-gradient-to-br from-card to-primary/5"
@@ -112,21 +127,21 @@ export function Dashboard() {
           value="3:42"
           description="Minutos por sessão"
           icon={<Clock className="h-4 w-4" />}
-          trend={{ value: 8.1, label: 'vs média mensal', isPositive: true }}
+          trend={{ value: 8.1, isPositive: true }}
         />
         <MetricCard
           title="Pico de Audiência"
           value="16:30"
           description="Horário com mais conversões"
           icon={<Zap className="h-4 w-4" />}
-          trend={{ value: 145, label: 'conversões no pico' }}
+          trend={{ value: 145 }}
         />
         <MetricCard
           title="Player Destaque"
           value="Player Principal"
           description="Maior taxa de conversão (72%)"
           icon={<Target className="h-4 w-4" />}
-          trend={{ value: 5.3, label: 'vs outros players', isPositive: true }}
+          trend={{ value: 5.3, isPositive: true }}
         />
       </div>
 

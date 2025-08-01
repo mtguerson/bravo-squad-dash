@@ -33,7 +33,7 @@ export function useConversions({
   playerId,
 }: IUseConversionsProps) {
   const { data, isLoading } = useQuery({
-    queryFn: () =>
+    queryFn: async () =>
       listConversions({
         startDate: startOfTheDay,
         endDate: endOfTheDay,
@@ -44,7 +44,7 @@ export function useConversions({
 
   return {
     conversions: data,
-    isConversionsLoading: isLoading,
+    areConversionsLoading: isLoading,
   };
 }
 

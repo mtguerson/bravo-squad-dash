@@ -8,8 +8,9 @@ interface MetricCardProps {
   icon?: React.ReactNode;
   trend?: {
     value: number;
-    label: string;
+    label?: string;
     isPositive?: boolean;
+    isPercent?: boolean;
   };
   className?: string;
 }
@@ -43,10 +44,14 @@ export function MetricCard({
                 trend.isPositive ? 'text-green-500' : 'text-destructive'
               )}
             >
-              {trend.value.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD',
-              })}
+              {trend.isPercent
+                ? `${trend.value}%`
+                : trend.value.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  })}{' '}
+              {''}
+              {trend.label}
             </span>
           </div>
         )}

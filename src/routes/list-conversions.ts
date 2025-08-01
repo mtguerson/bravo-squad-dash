@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios';
 
-interface ListTodayResponse {
+interface ListConversionsResponse {
   total_events: number;
   total_uniq_session_events: number;
   total_uniq_device_events: number;
@@ -28,11 +28,14 @@ export async function listConversions({
 }: ListConversionsRequest) {
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  const response = await api.post<ListTodayResponse>('/list-conversions', {
-    startDate,
-    endDate,
-    playerId,
-  });
+  const response = await api.post<ListConversionsResponse>(
+    '/list-conversions',
+    {
+      startDate,
+      endDate,
+      playerId,
+    }
+  );
 
   return response.data;
 }
