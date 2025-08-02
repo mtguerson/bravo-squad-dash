@@ -11,7 +11,7 @@ import { HeaderProvider } from './contexts/header-context';
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="system">
+      <ThemeProvider defaultTheme="dark">
         <BrowserRouter>
           <SidebarProvider defaultOpen={true}>
             <div className="min-h-screen flex w-full bg-gradient-background">
