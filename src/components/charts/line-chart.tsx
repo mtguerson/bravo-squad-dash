@@ -25,6 +25,8 @@ interface LineChartComponentProps {
     | undefined;
   dataKey: string;
   xAxisKey: string;
+  xAxisLabel?: string;
+  dataLabel?: string;
   color?: string;
   height?: number;
 }
@@ -35,6 +37,8 @@ export function LineChartComponent({
   data,
   dataKey,
   xAxisKey,
+  xAxisLabel,
+  dataLabel,
   color = 'var(--chart-1)',
   height = 300,
 }: LineChartComponentProps) {
@@ -69,7 +73,7 @@ export function LineChartComponent({
                       <div className="grid grid-cols-2 gap-2">
                         <div className="flex flex-col">
                           <span className="text-[0.70rem] uppercase text-primary">
-                            {xAxisKey}
+                            {xAxisLabel || xAxisKey}
                           </span>
                           <span className="font-bold text-foreground">
                             {label}
@@ -77,7 +81,7 @@ export function LineChartComponent({
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[0.70rem] uppercase text-primary">
-                            {dataKey}
+                            {dataLabel || dataKey}
                           </span>
                           <span className="font-bold">{payload[0].value}</span>
                         </div>

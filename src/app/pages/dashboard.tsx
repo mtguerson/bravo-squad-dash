@@ -193,6 +193,8 @@ export function Dashboard() {
             data={conversionsPerDayFormatted}
             dataKey="total_conversions"
             xAxisKey="date_key"
+            xAxisLabel="Data"
+            dataLabel="Conversões"
             color="var(--primary)"
           />
         )}
@@ -205,6 +207,8 @@ export function Dashboard() {
             data={totalAmountPerDayFormatted}
             dataKey="total_amount_brl"
             xAxisKey="date_key"
+            xAxisLabel="Data"
+            dataLabel="Receita"
             color="var(--primary)"
           />
         )}
