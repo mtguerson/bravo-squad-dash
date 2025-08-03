@@ -63,7 +63,7 @@ export function BarChartComponent({
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `${value}`}
+              tickFormatter={(value) => `R$ ${value / 100}`}
             />
             <Tooltip
               content={({ active, payload, label }) => {
