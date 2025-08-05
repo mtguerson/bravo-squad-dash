@@ -4,7 +4,11 @@ import { ThemeToggle } from '../ui/theme-toggle';
 import { HeaderSelect } from './header-select';
 import { useHeader } from '@/hooks/use-header';
 
-export function Header() {
+interface HeaderProps {
+  shouldAppearPeriod?: boolean;
+}
+
+export function Header({ shouldAppearPeriod = true }: HeaderProps) {
   const {
     // selectedCompany,
     selectedPeriod,
@@ -48,15 +52,17 @@ export function Header() {
             item={players}
           />
 
-          <HeaderSelect
-            Icon={CalendarIcon}
-            value={selectedPeriod.value}
-            onValueChange={(value) => {
-              const period = periods.find((p) => p.value === value);
-              if (period) setSelectedPeriod(period);
-            }}
-            item={periods}
-          />
+          {shouldAppearPeriod && (
+            <HeaderSelect
+              Icon={CalendarIcon}
+              value={selectedPeriod.value}
+              onValueChange={(value) => {
+                const period = periods.find((period) => period.value === value);
+                if (period) setSelectedPeriod(period);
+              }}
+              item={periods}
+            />
+          )}
         </div>
 
         <div className="ml-auto">

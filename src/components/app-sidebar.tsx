@@ -7,6 +7,7 @@ import {
   Home,
   Target,
   Clock,
+  Globe,
 } from 'lucide-react';
 
 import {
@@ -26,6 +27,7 @@ import { useState } from 'react';
 
 const items = [
   { title: 'Dashboard', url: '/', icon: Home },
+  { title: 'Domínios', url: '/domains', icon: Globe },
   { title: 'Conversões', url: '/conversions', icon: Target },
   { title: 'Engajamento', url: '/engagement', icon: TrendingUp },
   { title: 'Retenção', url: '/retention', icon: Clock },
@@ -37,6 +39,7 @@ const items = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const [firstItem] = useState(items[0]);
+  const [secondItem] = useState(items[1]);
   const location = useLocation();
   const currentPath = location.pathname;
   const collapsed = state === 'collapsed';
@@ -86,8 +89,9 @@ export function AppSidebar() {
                     to={firstItem.url}
                     end
                     className={
-                      currentPath &&
-                      'bg-primary/70 text-primary-foreground font-medium shadow-md'
+                      currentPath === firstItem.url
+                        ? 'bg-primary/70 text-primary-foreground font-medium shadow-md'
+                        : ''
                     }
                     title={collapsed ? firstItem.title : undefined}
                   >
@@ -95,6 +99,26 @@ export function AppSidebar() {
                     {!collapsed && (
                       <span className="ml-3 text-foreground">
                         {firstItem.title}
+                      </span>
+                    )}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <NavLink
+                    to={secondItem.url}
+                    className={
+                      currentPath === secondItem.url
+                        ? 'bg-primary/70 text-primary-foreground font-medium shadow-md'
+                        : ''
+                    }
+                    title={collapsed ? secondItem.title : undefined}
+                  >
+                    <secondItem.icon className="h-4 w-4 shrink-0 text-foreground" />
+                    {!collapsed && (
+                      <span className="ml-3 text-foreground">
+                        {secondItem.title}
                       </span>
                     )}
                   </NavLink>
