@@ -1,8 +1,11 @@
 import { endOfDayFormatted, startOfDayFormatted } from '@/lib/utils';
 import { endOfToday, startOfToday, subDays } from 'date-fns';
+import { usePlayers } from '@/hooks/use-players';
 import {
   createContext,
   useState,
+  useEffect,
+  useMemo,
   type Dispatch,
   type SetStateAction,
 } from 'react';
@@ -13,6 +16,7 @@ interface IHeaderContextProps {
     label: string;
     createdAt: string;
   }[];
+  arePlayersLoading: boolean;
   periods: {
     value: string;
     label: string;
@@ -41,55 +45,70 @@ interface IHeaderContextProps {
 
 export const HeaderContext = createContext({} as IHeaderContextProps);
 
-const players = [
-  {
-    value: '687e6b0509d90c4d947bcf81',
-    label: 'Cognify-VSL2 Lead1',
-    createdAt: '2025-07-22 00:00:00',
-  },
-  {
-    value: '6884056e5e710078faed8565',
-    label: 'GlycoGuard-VSL4 Lead1',
-    createdAt: '2025-07-25 00:00:00',
-  },
-  {
-    value: '688405355085f959648ed904',
-    label: 'AlphaTurbo VSL2 Lead2',
-    createdAt: '2025-07-25 00:00:00',
-  },
-];
-
 export function HeaderProvider({ children }: { children: React.ReactNode }) {
-  const [selectedPlayer, setSelectedPlayer] = useState(players[0]);
+  const { players: playersData, arePlayersLoading } = usePlayers();
 
-  const periods = [
-    {
-      value: 'all-time',
-      startOfTheDay: startOfDayFormatted(selectedPlayer.createdAt),
-      endOfTheDay: endOfDayFormatted(endOfToday()),
-      label: 'Todo o período',
-    },
-    {
-      value: 'today',
-      startOfTheDay: startOfDayFormatted(startOfToday()),
-      endOfTheDay: endOfDayFormatted(endOfToday()),
-      label: 'Hoje',
-    },
-    {
-      value: 'last7days',
-      startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 7)),
-      endOfTheDay: endOfDayFormatted(endOfToday()),
-      label: 'Últimos 7 dias',
-    },
-    {
-      value: 'last30days',
-      startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 30)),
-      endOfTheDay: endOfDayFormatted(endOfToday()),
-      label: 'Últimos 30 dias',
-    },
-  ];
+  // TODO usar o formato retornado da api
+  const players =
+    playersData?.map((player) => ({
+      value: player.id,
+      label: player.name,
+      createdAt: player.createdAt,
+    })) ?? [];
+
+  const [selectedPlayer, setSelectedPlayer] = useState({
+    value: '',
+    label: '',
+    createdAt: '',
+  });
+
+  useEffect(() => {
+    if (players.length > 0 && !selectedPlayer.value) {
+      setSelectedPlayer(players[0]);
+    }
+  }, [players, selectedPlayer.value]);
+
+  const periods = useMemo(() => {
+    const playerCreatedAt =
+      selectedPlayer.createdAt ||
+      startOfDayFormatted(subDays(startOfToday(), 30));
+
+    return [
+      {
+        value: 'all-time',
+        startOfTheDay: startOfDayFormatted(playerCreatedAt),
+        endOfTheDay: endOfDayFormatted(endOfToday()),
+        label: 'Todo o período',
+      },
+      {
+        value: 'today',
+        startOfTheDay: startOfDayFormatted(startOfToday()),
+        endOfTheDay: endOfDayFormatted(endOfToday()),
+        label: 'Hoje',
+      },
+      {
+        value: 'last7days',
+        startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 7)),
+        endOfTheDay: endOfDayFormatted(endOfToday()),
+        label: 'Últimos 7 dias',
+      },
+      {
+        value: 'last30days',
+        startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 30)),
+        endOfTheDay: endOfDayFormatted(endOfToday()),
+        label: 'Últimos 30 dias',
+      },
+    ];
+  }, [selectedPlayer.createdAt]);
 
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
+
+  // Atualiza o período selecionado quando os períodos mudarem
+  useEffect(() => {
+    if (periods.length > 0) {
+      setSelectedPeriod(periods[0]);
+    }
+  }, [periods]);
 
   return (
     <HeaderContext.Provider
@@ -100,6 +119,7 @@ export function HeaderProvider({ children }: { children: React.ReactNode }) {
         setSelectedPlayer,
         periods,
         players,
+        arePlayersLoading,
       }}
     >
       {children}

@@ -16,6 +16,7 @@ export function useAllStats({
   const { data, isLoading } = useQuery({
     queryKey: ['all-stats', playerId, startDate, endDate],
     queryFn: async () => listAllStats({ startDate, endDate, playerId }),
+    enabled: !!playerId && playerId.length > 0,
   });
 
   return {
@@ -32,6 +33,7 @@ export function useAllStatsByDay({
   const { data, isLoading } = useQuery({
     queryKey: ['all-stats-by-day', playerId],
     queryFn: async () => listAllStatsByDay({ startDate, endDate, playerId }),
+    enabled: !!playerId && playerId.length > 0,
   });
 
   return {

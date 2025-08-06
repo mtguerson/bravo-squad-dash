@@ -10,6 +10,10 @@ export function startOfDayFormatted(date: Date | string) {
   return startOfDay(date).toISOString().slice(0, 10) + ' 00:00:00';
 }
 
-export function endOfDayFormatted(date: Date) {
+export function endOfDayFormatted(date: Date | string) {
   return endOfDay(date).toISOString().slice(0, 10) + ' 00:00:00';
+}
+
+export async function sleep(ms = 3000) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

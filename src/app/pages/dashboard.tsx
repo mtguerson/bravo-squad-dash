@@ -10,7 +10,7 @@ import { endOfToday, startOfToday, subDays } from 'date-fns';
 import { Header } from '@/components/header';
 
 export function Dashboard() {
-  const { selectedPlayer, selectedPeriod } = useHeader();
+  const { selectedPlayer, selectedPeriod, arePlayersLoading } = useHeader();
 
   const { allStats, areAllStatsLoading } = useAllStats({
     playerId: selectedPlayer.value,
@@ -63,6 +63,40 @@ export function Dashboard() {
       };
     }
   );
+
+  if (arePlayersLoading) {
+    return (
+      <>
+        <Header />
+        <div className="p-6 space-y-6 animate-fade-in">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">
+              Dashboard Analytics
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Visão geral das métricas de conversão e engajamento dos seus
+              players
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

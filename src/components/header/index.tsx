@@ -3,6 +3,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { HeaderSelect } from './header-select';
 import { useHeader } from '@/hooks/use-header';
+import { Skeleton } from '../ui/skeleton';
 
 interface HeaderProps {
   shouldAppearPeriod?: boolean;
@@ -10,15 +11,13 @@ interface HeaderProps {
 
 export function Header({ shouldAppearPeriod = true }: HeaderProps) {
   const {
-    // selectedCompany,
     selectedPeriod,
     selectedPlayer,
-    // setSelectedCompany,
     setSelectedPeriod,
     setSelectedPlayer,
-    // companies,
     periods,
     players,
+    arePlayersLoading,
   } = useHeader();
 
   return (
@@ -41,16 +40,20 @@ export function Header({ shouldAppearPeriod = true }: HeaderProps) {
             item={companies}
           /> */}
 
-          <HeaderSelect
-            className="w-[180px]"
-            Icon={Play}
-            value={selectedPlayer.value}
-            onValueChange={(value) => {
-              const player = players.find((p) => p.value === value);
-              if (player) setSelectedPlayer(player);
-            }}
-            item={players}
-          />
+          {arePlayersLoading ? (
+            <Skeleton className="ml-6 h-8 w-[180px] bg-gradient-to-br from-card to-accent/5" />
+          ) : (
+            <HeaderSelect
+              className="w-[180px]"
+              Icon={Play}
+              value={selectedPlayer.value}
+              onValueChange={(value) => {
+                const player = players.find((p) => p.value === value);
+                if (player) setSelectedPlayer(player);
+              }}
+              item={players}
+            />
+          )}
 
           {shouldAppearPeriod && (
             <HeaderSelect
