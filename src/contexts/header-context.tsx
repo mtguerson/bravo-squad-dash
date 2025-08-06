@@ -1,6 +1,6 @@
 import { endOfDayFormatted, startOfDayFormatted } from '@/lib/utils';
 import { endOfToday, startOfToday, subDays } from 'date-fns';
-import { usePlayers } from '@/hooks/use-players';
+import { useListPlayers } from '@/hooks/use-players';
 import {
   createContext,
   useState,
@@ -46,7 +46,7 @@ interface IHeaderContextProps {
 export const HeaderContext = createContext({} as IHeaderContextProps);
 
 export function HeaderProvider({ children }: { children: React.ReactNode }) {
-  const { players: playersData, arePlayersLoading } = usePlayers();
+  const { players: playersData, arePlayersLoading } = useListPlayers();
 
   // TODO usar o formato retornado da api
   const players =

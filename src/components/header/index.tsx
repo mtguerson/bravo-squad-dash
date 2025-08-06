@@ -2,6 +2,7 @@ import { CalendarIcon, Play } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { HeaderSelect } from './header-select';
+import { AddPlayerForm } from './add-player-form';
 import { useHeader } from '@/hooks/use-header';
 import { Skeleton } from '../ui/skeleton';
 
@@ -68,7 +69,8 @@ export function Header({ shouldAppearPeriod = true }: HeaderProps) {
           )}
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto items-center gap-4 flex">
+          <AddPlayerForm />
           <ThemeToggle />
         </div>
       </div>
