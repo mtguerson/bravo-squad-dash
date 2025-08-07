@@ -68,47 +68,28 @@ export function HeaderProvider({ children }: { children: React.ReactNode }) {
     }
   }, [players, selectedPlayer.value]);
 
-  const periods = useMemo(() => {
-    const playerCreatedAt =
-      selectedPlayer.createdAt ||
-      startOfDayFormatted(subDays(startOfToday(), 30));
-
-    return [
-      {
-        value: 'all-time',
-        startOfTheDay: startOfDayFormatted(playerCreatedAt),
-        endOfTheDay: endOfDayFormatted(endOfToday()),
-        label: 'Todo o período',
-      },
-      {
-        value: 'today',
-        startOfTheDay: startOfDayFormatted(startOfToday()),
-        endOfTheDay: endOfDayFormatted(endOfToday()),
-        label: 'Hoje',
-      },
-      {
-        value: 'last7days',
-        startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 7)),
-        endOfTheDay: endOfDayFormatted(endOfToday()),
-        label: 'Últimos 7 dias',
-      },
-      {
-        value: 'last30days',
-        startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 30)),
-        endOfTheDay: endOfDayFormatted(endOfToday()),
-        label: 'Últimos 30 dias',
-      },
-    ];
-  }, [selectedPlayer.createdAt]);
+  const periods = [
+    {
+      value: 'today',
+      startOfTheDay: startOfDayFormatted(startOfToday()),
+      endOfTheDay: endOfDayFormatted(endOfToday()),
+      label: 'Hoje',
+    },
+    {
+      value: 'last7days',
+      startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 7)),
+      endOfTheDay: endOfDayFormatted(endOfToday()),
+      label: 'Últimos 7 dias',
+    },
+    {
+      value: 'last30days',
+      startOfTheDay: startOfDayFormatted(subDays(startOfToday(), 30)),
+      endOfTheDay: endOfDayFormatted(endOfToday()),
+      label: 'Últimos 30 dias',
+    },
+  ];
 
   const [selectedPeriod, setSelectedPeriod] = useState(periods[0]);
-
-  // Atualiza o período selecionado quando os períodos mudarem
-  useEffect(() => {
-    if (periods.length > 0) {
-      setSelectedPeriod(periods[0]);
-    }
-  }, [periods]);
 
   return (
     <HeaderContext.Provider
