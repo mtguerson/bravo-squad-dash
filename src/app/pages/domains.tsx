@@ -21,13 +21,14 @@ export function Domains() {
             Domínios Analytics
           </h1>
           <p className="text-muted-foreground mt-1">
-            Visualização dos domínios e usuários ativos em tempo real
+            Visualização dos domínios e usuários ativos nos últimos 30 minutos
           </p>
         </div>
 
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-foreground">
-            Domínios e Usuários Ativos
+            Domínios e Usuários Ativos{' '}
+            <span className="text-base text-primary">(últimos 30 min)</span>
           </h2>
 
           {areDomainsLoading ? (
@@ -54,12 +55,12 @@ export function Domains() {
                               {domainData.domain}
                             </span>
                           </div>
-                          <div className="text-right">
+                          <div className="flex items-center">
                             <span className="text-xl font-bold text-primary">
                               {domainData.live_users}
                             </span>
                             <span className="text-sm text-muted-foreground ml-2">
-                              usuários
+                              usuários ativos
                             </span>
                           </div>
                         </div>
