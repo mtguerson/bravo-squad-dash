@@ -79,19 +79,19 @@ export function Dashboard() {
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           </div>
           <div className="grid gap-4 md:grid-cols-3">
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
-            <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-[428px] bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
+            <Skeleton className="h-[428px] bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           </div>
         </div>
       </>
@@ -113,7 +113,7 @@ export function Dashboard() {
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Visualizações"
@@ -128,7 +128,7 @@ export function Dashboard() {
             />
           )}
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Play Rate"
@@ -144,7 +144,7 @@ export function Dashboard() {
           )}
 
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Retenção ao Pitch"
@@ -161,7 +161,7 @@ export function Dashboard() {
             />
           )}
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Conversões"
@@ -179,7 +179,7 @@ export function Dashboard() {
 
         <div className="grid gap-4 md:grid-cols-3">
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Taxa de Conversão"
@@ -190,7 +190,7 @@ export function Dashboard() {
             />
           )}
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Receita"
@@ -208,7 +208,7 @@ export function Dashboard() {
             />
           )}
           {areAllStatsLoading ? (
-            <Skeleton className="h-40 bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-40 bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <MetricCard
               title="Engajamento"
@@ -222,7 +222,7 @@ export function Dashboard() {
 
         <div className="grid gap-6 lg:grid-cols-2">
           {areAllStatsByDayStatsLoading ? (
-            <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-[428px] bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <LineChartComponent
               title="Conversões Diárias"
@@ -236,7 +236,7 @@ export function Dashboard() {
             />
           )}
           {areAllStatsByDayStatsLoading ? (
-            <Skeleton className="h-[428px] bg-gradient-to-br from-card to-accent/5 rounded-2xl" />
+            <Skeleton className="h-[428px] bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border rounded-2xl shadow-sm" />
           ) : (
             <BarChartComponent
               title="Receita por dia"

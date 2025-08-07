@@ -42,7 +42,7 @@ export function Header({ shouldAppearPeriod = true }: HeaderProps) {
           /> */}
 
           {arePlayersLoading ? (
-            <Skeleton className="ml-6 h-8 w-[180px] bg-gradient-to-br from-card to-accent/5" />
+            <Skeleton className="ml-6 h-9 w-[180px] bg-gradient-to-br from-muted via-muted/80 to-muted/60 border border-border shadow-sm" />
           ) : (
             <HeaderSelect
               className="w-[180px]"
