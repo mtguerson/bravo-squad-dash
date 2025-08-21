@@ -210,3 +210,5 @@ This project is private and proprietary.
 ---
 
 Built with ❤️ by the Bravo Squad team
+
+![88fb87d6-84d8-4791-82f9-b01a429e2939](https://github.com/user-attachments/assets/99e041c5-1c24-4e9d-abf4-2bc5d2617fb9)
